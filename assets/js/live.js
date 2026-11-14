@@ -3,6 +3,7 @@
   'use strict';
   var MCW = window.MCW || (window.MCW = {});
   var CFG = window.MCW_CONFIG || {};
+  var FRESH_MS = 60 * 1000;
 
   function Poller(path, opts) {
     opts = opts || {};
@@ -16,6 +17,7 @@
     this.busy = false;
     this.timer = null;
     this.listeners = [];
+    this.expired = false;
   }
 
   Poller.prototype.on = function (fn) {
@@ -54,6 +56,7 @@
         self.lastOk = Date.now();
         self.downSince = 0;
         self.error = '';
+        self.expired = false;
       }
       self.emit();
       return self;
@@ -66,27 +69,39 @@
   };
 
   Poller.prototype.fail = function (msg) {
-    this.state = this.data ? 'stale' : 'down';
+    var age = this.lastOk ? (Date.now() - this.lastOk) : Infinity;
+    this.expired = age > FRESH_MS;
+    if (this.expired) {
+      this.data = null;
+      this.state = 'down';
+    } else {
+      this.state = this.data ? 'stale' : 'down';
+    }
     if (!this.downSince) this.downSince = Date.now();
     this.error = msg || '';
+  };
+
+  Poller.prototype.fresh = function () {
+    return !!this.lastOk && (Date.now() - this.lastOk) <= FRESH_MS;
   };
 
   function label(state) {
     if (state === 'live') return '实时';
     if (state === 'stale') return '连接中断';
     if (state === 'connecting') return '连接中';
-    return '服务端未连接';
+    return '服务端未连接（可重试）';
   }
 
   function hint(state) {
     if (state === 'live') return '';
-    if (state === 'stale') return '显示的是最后一次成功数据';
+    if (state === 'stale') return '显示的是最后一次成功数据（最多 60 秒）';
     if (state === 'connecting') return '正在请求数据';
-    return '游戏内使用 /stock buy <代码> <数量>';
+    return '服务端未连接（可重试）';
   }
 
   MCW.live = {
     make: function (path, opts) { return new Poller(path, opts); },
+    FRESH_MS: FRESH_MS,
     label: label,
     hint: hint,
     stateClass: function (state) {

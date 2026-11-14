@@ -20,5 +20,15 @@
 
   MCW.ready(function () {
     MCW.address.bind();
+    /* 首屏自动取一次地址；不碰 Turnstile，失败保留“未获取（可重试）” */
+    function auto() {
+      try { MCW.address.refresh('/api/status', 'serverAddress'); } catch (e) {}
+    }
+    try {
+      if ('requestIdleCallback' in window) requestIdleCallback(auto, { timeout: 1500 });
+      else setTimeout(auto, 0);
+    } catch (e) {
+      setTimeout(auto, 0);
+    }
   });
 })();

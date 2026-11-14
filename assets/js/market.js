@@ -45,9 +45,11 @@
     if (note) note.classList.toggle('hidden', p.state === 'live');
     var det = document.getElementById('offline-detail');
     if (det) {
-      det.textContent = p.state === 'stale'
-        ? '连接中断于 ' + MCW.clock(p.downSince) + '，显示最后一次成功数据，每 5 秒重试。'
-        : '等待服务端恢复，页面每 5 秒重试。';
+      det.textContent = p.expired
+        ? '已超过 60 秒未连接，数字已置空；服务端未连接（可重试），每 5 秒重试。'
+        : (p.state === 'stale'
+          ? '连接中断于 ' + MCW.clock(p.downSince) + '，显示最后一次成功数据（最多 60 秒），每 5 秒重试。'
+          : '服务端未连接（可重试），等待恢复，每 5 秒重试。');
     }
   }
 
@@ -139,6 +141,10 @@
             if (state.items[i].id === state.selected) { state.detail = state.items[i]; break; }
           }
         }
+      } else if (p.expired) {
+        state.items = [];
+        state.detail = null;
+        state.selected = '';
       }
       renderList();
       renderDetail();

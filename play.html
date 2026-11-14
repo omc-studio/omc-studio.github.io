@@ -31,7 +31,39 @@ window.MCW_CONFIG = {
   pollMs: 5000
 };
 </script>
-<script defer src="./assets/js/gate.js?v=20261114g"></script>
+<script defer src="./assets/js/bundle-play.js?v=20261114h"></script>
+<script data-mcw-boot>
+(function () {
+  var src = './assets/js/bundle-play.js?v=20261114h';
+  var retried = false;
+  function warn() {
+    try {
+      if (document.getElementById('mcw-boot-warn')) return;
+      var d = document.createElement('div');
+      d.id = 'mcw-boot-warn';
+      d.textContent = '部分功能未加载，请刷新';
+      d.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:9999;background:#3a1d1d;color:#ffd7d7;border:1px solid #7a2b2b;padding:8px 12px;font:13px/1.5 system-ui;';
+      (document.body || document.documentElement).appendChild(d);
+    } catch (e) {}
+  }
+  function retry() {
+    if (retried || window.__MCW_BUNDLE_STARTED__) return;
+    retried = true;
+    var s = document.createElement('script');
+    s.src = src + (src.indexOf('?') === -1 ? '?' : '&') + 'retry=1';
+    s.onload = function () {
+      var w = document.getElementById('mcw-boot-warn');
+      if (w && window.__MCW_BUNDLE_STARTED__ && w.parentNode) w.parentNode.removeChild(w);
+    };
+    s.onerror = warn;
+    (document.head || document.documentElement).appendChild(s);
+  }
+  window.addEventListener('error', function (e) {
+    if (e && e.target && e.target.src && e.target.src.indexOf('bundle-') !== -1) { warn(); retry(); }
+  }, true);
+  setTimeout(function () { if (!window.__MCW_BUNDLE_STARTED__) { warn(); retry(); } }, 8000);
+})();
+</script>
 <meta name="description" content="AMC Minecraft Community 连接地址、账号登录、Minecraft 绑定与订单。">
 <link rel="preconnect" href="https://amc-world.pages.dev" crossorigin>
 <link rel="dns-prefetch" href="https://challenges.cloudflare.com">
@@ -272,8 +304,11 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
       <button class="btn btn-sm hidden" type="button" id="addr-follow">停止自动更新</button>
       <span class="small muted" id="addr-follow-note"></span>
       <span class="sep">|</span>
+      <span class="muted small">在线</span><b class="mono" id="play-online">—</b>
+      <span class="muted small">/</span><b class="mono" id="play-max">—</b>
+      <span class="sep">|</span>
       <span class="muted small">版本</span><b class="mono" id="ver">—</b>
-      <p class="small muted" style="flex-basis:100%;margin:0">首次点击获取并复制；之后每 20 秒自动更新，可随时停止</p>
+      <p class="small muted" style="flex-basis:100%;margin:0">页面加载即自动获取；按钮用于刷新/复制，之后每 20 秒自动更新，可随时停止</p>
       <p class="small muted" style="flex-basis:100%;margin:0">网页短链 <code>/mc</code> 由 Cloudflare 302 跳转到地图站；Minecraft 客户端仍需直连上面的 TCP 地址，302 不能替代。</p>
     </div>
   </section>
@@ -447,33 +482,5 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
 
 <footer class="foot"><div class="wrap"><span>AMC Minecraft Community</span><span class="sep">·</span><span>© <span data-year>2026</span></span></div></footer>
 <div id="toast-host"></div>
-<script src="./assets/js/util.js?v=20261114g" defer></script>
-<script src="./assets/js/from.js?v=20261114g" defer></script>
-<script src="./assets/js/api.js?v=20261114g" defer></script>
-<script src="./assets/js/address.js?v=20261114g" defer></script>
-<script src="./assets/js/live.js?v=20261114g" defer></script>
-<script src="./assets/js/chart.js?v=20261114g" defer></script>
-<script src="./assets/js/nav.js?v=20261114g" defer></script>
-<script src="./assets/js/account.js?v=20261114g" defer></script>
-<script src="./assets/js/prewarm.js?v=20261114g" defer></script>
-<script>
-/* 页面 load 后惰性预热 Turnstile；失败静默，不阻塞首屏。 */
-(function () {
-  function warm() {
-    try {
-      if (window.MCW && window.MCW.prewarm && typeof window.MCW.prewarm.start === 'function') window.MCW.prewarm.start();
-    } catch (e) {}
-  }
-  function schedule() {
-    try {
-      if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 3000 });
-      else setTimeout(warm, 2500);
-    } catch (e) {}
-  }
-  if (document.readyState === 'complete') schedule();
-  else window.addEventListener('load', schedule, { once: true });
-})();
-</script>
-<script src="./assets/js/play.js?v=20261114g" defer></script>
 </body>
 </html>

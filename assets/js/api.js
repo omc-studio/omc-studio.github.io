@@ -38,7 +38,7 @@
     opts = opts || {};
     var b = base();
     if (!b) {
-      var e0 = new Error('服务端未连接');
+      var e0 = new Error('服务端未连接（可重试）');
       e0.code = 'NOT_CONNECTED';
       return Promise.reject(e0);
     }

@@ -32,8 +32,40 @@ window.MCW_CONFIG = {
   pollMs: 5000
 };
 </script>
-<script defer src="./assets/js/gate.js?v=20261114g"></script>
-<script src="./assets/js/alias.js?v=20261114g"></script>
+<script defer src="./assets/js/bundle-404.js?v=20261114h"></script>
+<script data-mcw-boot>
+(function () {
+  var src = './assets/js/bundle-404.js?v=20261114h';
+  var retried = false;
+  function warn() {
+    try {
+      if (document.getElementById('mcw-boot-warn')) return;
+      var d = document.createElement('div');
+      d.id = 'mcw-boot-warn';
+      d.textContent = '部分功能未加载，请刷新';
+      d.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:9999;background:#3a1d1d;color:#ffd7d7;border:1px solid #7a2b2b;padding:8px 12px;font:13px/1.5 system-ui;';
+      (document.body || document.documentElement).appendChild(d);
+    } catch (e) {}
+  }
+  function retry() {
+    if (retried || window.__MCW_BUNDLE_STARTED__) return;
+    retried = true;
+    var s = document.createElement('script');
+    s.src = src + (src.indexOf('?') === -1 ? '?' : '&') + 'retry=1';
+    s.onload = function () {
+      var w = document.getElementById('mcw-boot-warn');
+      if (w && window.__MCW_BUNDLE_STARTED__ && w.parentNode) w.parentNode.removeChild(w);
+    };
+    s.onerror = warn;
+    (document.head || document.documentElement).appendChild(s);
+  }
+  window.addEventListener('error', function (e) {
+    if (e && e.target && e.target.src && e.target.src.indexOf('bundle-') !== -1) { warn(); retry(); }
+  }, true);
+  setTimeout(function () { if (!window.__MCW_BUNDLE_STARTED__) { warn(); retry(); } }, 8000);
+})();
+</script>
+<meta name="description" content="AMC Minecraft Community 页面不存在；旧链接会自动跳转到新地址。">
 <link rel="preconnect" href="https://amc-world.pages.dev" crossorigin>
 <link rel="dns-prefetch" href="https://challenges.cloudflare.com">
 <link rel="icon" href="./favicon.svg" type="image/svg+xml">
@@ -243,8 +275,7 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
 #ts-box{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line-soft)}
 
 </style>
-</head>
-<body>
+</head><body>
 <header class="topbar">
   <div class="wrap topbar-in">
     <a class="brand" href="./index.html">AMC <span>Minecraft Community</span></a>
@@ -261,13 +292,17 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
 <main class="wrap">
   <div class="page-head">
     <h1>页面不存在</h1>
-    <p class="sub">地址可能已变更。<a href="./index.html">返回首页</a></p>
+    <p class="sub">这个地址没有对应页面；旧链接会自动跳转到新地址，也可以从下方回到首页。</p>
   </div>
+  <section class="panel">
+    <div class="panel-body">
+      <p class="small muted" style="margin-bottom:12px">如果是从收藏夹或外部链接进入，请使用站内导航；股票、行情、进服与规则页都在顶部菜单。</p>
+      <a class="btn" href="./index.html">回到首页</a>
+      <a class="btn btn-sm" href="./play.html">进服指引</a>
+    </div>
+  </section>
 </main>
-<script src="./assets/js/util.js?v=20261114g" defer></script>
-<script src="./assets/js/from.js?v=20261114g" defer></script>
-<script src="./assets/js/api.js?v=20261114g" defer></script>
-<script src="./assets/js/nav.js?v=20261114g" defer></script>
 <footer class="foot"><div class="wrap"><span>AMC Minecraft Community</span><span class="sep">·</span><span>© <span data-year>2026</span></span></div></footer>
+<div id="toast-host"></div>
 </body>
 </html>

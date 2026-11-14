@@ -12,6 +12,12 @@
   var followTimer = null;
   var followBusy = false;
   var FOLLOW_MS = 20000;
+  var STATUS_TTL = 60 * 1000;
+  var currentOnline = null;
+  var currentMax = null;
+  var statusAt = 0;
+  var lastOkAt = 0;
+  var failed = false;
 
   function el(id) { return document.getElementById(id); }
 
@@ -46,7 +52,7 @@
     var btn = addressButton();
     var fbtn = followButton();
     var note = el('addr-follow-note');
-    if (addr) addr.textContent = currentAddress || (revealed ? '待开通' : '未获取');
+    if (addr) addr.textContent = currentAddress || (failed ? '未获取（可重试）' : (revealed ? '待开通' : '未获取'));
     if (btn) {
       btn.textContent = currentAddress ? '复制连接地址' : '获取连接地址';
       btn.disabled = false;
@@ -78,6 +84,54 @@
     });
   }
 
+  function numText(v) {
+    if (v === null || v === undefined || v === '') return '—';
+    var n = Number(v);
+    if (!isFinite(n)) return '—';
+    return MCW.fmtInt ? MCW.fmtInt(n) : String(n);
+  }
+
+  function paintStatus() {
+    var fresh = statusAt && (Date.now() - statusAt) <= STATUS_TTL;
+    var online = fresh && currentOnline !== null ? currentOnline : null;
+    var max = fresh && currentMax !== null ? currentMax : null;
+    ['play-online', 'addr-online'].forEach(function (id) {
+      var n = el(id);
+      if (n) n.textContent = numText(online);
+    });
+    ['play-max', 'addr-max'].forEach(function (id) {
+      var n = el(id);
+      if (n) n.textContent = numText(max);
+    });
+  }
+
+  function applyStatus(data) {
+    data = data || {};
+    currentOnline = (data.online !== undefined && data.online !== null && isFinite(Number(data.online))) ? Number(data.online) : null;
+    currentMax = (data.max !== undefined && data.max !== null && isFinite(Number(data.max))) ? Number(data.max) : null;
+    statusAt = (currentOnline !== null || currentMax !== null) ? Date.now() : 0;
+    paintStatus();
+  }
+
+  function markOk() {
+    lastOkAt = Date.now();
+    failed = false;
+  }
+
+  /* 失败后最多保留 60 秒旧值；超时统一回落为 —，绝不补 0 */
+  function expireIfStale() {
+    if (lastOkAt && (Date.now() - lastOkAt) <= STATUS_TTL) return false;
+    currentAddress = '';
+    currentVersion = '';
+    currentOnline = null;
+    currentMax = null;
+    statusAt = 0;
+    paintAddress();
+    paintVersion();
+    paintStatus();
+    return true;
+  }
+
   function set(raw) {
     currentAddress = normalize(raw);
     paintAddress();
@@ -101,11 +155,17 @@
     }
     return MCW.api.get(path).then(function (data) {
       data = data || {};
+      markOk();
       set(data[field]);
       setVersion(data.version);
+      applyStatus(data);
       return currentAddress;
     }, function () {
-      setVersion('');
+      failed = true;
+      expireIfStale();
+      paintAddress();
+      paintVersion();
+      paintStatus();
       return currentAddress;
     });
   }
@@ -142,6 +202,8 @@
     followBusy = true;
     return MCW.api.get('/api/status').then(function (data) {
       data = data || {};
+      markOk();
+      applyStatus(data);
       var next = normalize(data.serverAddress);
       if (next !== currentAddress) {
         set(next);
@@ -150,6 +212,11 @@
       setVersion(data.version);
       return currentAddress;
     }, function () {
+      failed = true;
+      expireIfStale();
+      paintAddress();
+      paintVersion();
+      paintStatus();
       return currentAddress;
     }).then(function (addr) {
       followBusy = false;
@@ -240,6 +307,7 @@
   function init() {
     paintAddress();
     paintVersion();
+    paintStatus();
     bind();
   }
 
@@ -257,6 +325,9 @@
     following: function () { return following; },
     revealed: function () { return revealed; },
     FOLLOW_MS: FOLLOW_MS,
+    STATUS_TTL: STATUS_TTL,
+    online: function () { return currentOnline; },
+    max: function () { return currentMax; },
     current: function () { return currentAddress; },
     version: function () { return formatVersion(currentVersion); }
   };
