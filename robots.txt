@@ -1,0 +1,5 @@
+# AMC（GitHub Pages 静态站）
+User-agent: *
+Allow: /
+
+# 静态站点；数据接口在独立服务端，不在本站路径下。

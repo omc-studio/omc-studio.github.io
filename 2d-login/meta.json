@@ -1,0 +1,1051 @@
+{
+  "generatedAt": "2026-11-14T02:43:08.086Z",
+  "world": {
+    "levelName": "OMC-Login",
+    "dataVersion": 5023,
+    "gameType": 2,
+    "spawn": {
+      "x": -176,
+      "y": 134,
+      "z": 280
+    }
+  },
+  "tileSize": 256,
+  "blockPerPixel": 1,
+  "zoom": {
+    "min": 0.25,
+    "max": 8,
+    "default": 1
+  },
+  "bounds": {
+    "chunks": {
+      "minX": -51,
+      "maxX": 35,
+      "minZ": -49,
+      "maxZ": 67
+    },
+    "blocks": {
+      "minX": -816,
+      "maxX": 575,
+      "minY": 0,
+      "maxY": 255,
+      "minZ": -784,
+      "maxZ": 1087
+    },
+    "world": {
+      "minX": -816,
+      "maxX": 575,
+      "minZ": -784,
+      "maxZ": 1087
+    }
+  },
+  "chunkStats": {
+    "total": 6293,
+    "withBlocks": 4159,
+    "empty": 2134,
+    "corrupt": 0,
+    "legacyRendered": 0
+  },
+  "blockTop10": [
+    [
+      "stone",
+      3637196
+    ],
+    [
+      "dirt",
+      1901749
+    ],
+    [
+      "grass_block",
+      977915
+    ],
+    [
+      "bedrock",
+      947592
+    ],
+    [
+      "gray_wool",
+      97974
+    ],
+    [
+      "cyan_terracotta",
+      70053
+    ],
+    [
+      "gray_terracotta",
+      25635
+    ],
+    [
+      "dark_oak_planks",
+      18238
+    ],
+    [
+      "sandstone",
+      14156
+    ],
+    [
+      "birch_planks",
+      14143
+    ]
+  ],
+  "blockTotal": 7848135,
+  "tiles": [
+    {
+      "z": 0,
+      "x": -4,
+      "y": -4,
+      "file": "tiles/z0/-4_-4.png",
+      "heightFile": "height/z0/-4_-4.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": -4,
+      "file": "tiles/z0/-3_-4.png",
+      "heightFile": "height/z0/-3_-4.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": -4,
+      "file": "tiles/z0/-2_-4.png",
+      "heightFile": "height/z0/-2_-4.png",
+      "chunks": 7,
+      "blocks": 7168
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": -4,
+      "file": "tiles/z0/-1_-4.png",
+      "heightFile": "height/z0/-1_-4.png",
+      "chunks": 14,
+      "blocks": 14336
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": -4,
+      "file": "tiles/z0/0_-4.png",
+      "heightFile": "height/z0/0_-4.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": -4,
+      "file": "tiles/z0/1_-4.png",
+      "heightFile": "height/z0/1_-4.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": -4,
+      "file": "tiles/z0/2_-4.png",
+      "heightFile": "height/z0/2_-4.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": -3,
+      "file": "tiles/z0/-4_-3.png",
+      "heightFile": "height/z0/-4_-3.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": -3,
+      "file": "tiles/z0/-3_-3.png",
+      "heightFile": "height/z0/-3_-3.png",
+      "chunks": 169,
+      "blocks": 16384
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": -3,
+      "file": "tiles/z0/-2_-3.png",
+      "heightFile": "height/z0/-2_-3.png",
+      "chunks": 229,
+      "blocks": 135168
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": -3,
+      "file": "tiles/z0/-1_-3.png",
+      "heightFile": "height/z0/-1_-3.png",
+      "chunks": 224,
+      "blocks": 229376
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": -3,
+      "file": "tiles/z0/0_-3.png",
+      "heightFile": "height/z0/0_-3.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": -3,
+      "file": "tiles/z0/1_-3.png",
+      "heightFile": "height/z0/1_-3.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": -3,
+      "file": "tiles/z0/2_-3.png",
+      "heightFile": "height/z0/2_-3.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": -2,
+      "file": "tiles/z0/-4_-2.png",
+      "heightFile": "height/z0/-4_-2.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": -2,
+      "file": "tiles/z0/-3_-2.png",
+      "heightFile": "height/z0/-3_-2.png",
+      "chunks": 212,
+      "blocks": 77824
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": -2,
+      "file": "tiles/z0/-2_-2.png",
+      "heightFile": "height/z0/-2_-2.png",
+      "chunks": 256,
+      "blocks": 185344
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": -2,
+      "file": "tiles/z0/-1_-2.png",
+      "heightFile": "height/z0/-1_-2.png",
+      "chunks": 224,
+      "blocks": 233519
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": -2,
+      "file": "tiles/z0/0_-2.png",
+      "heightFile": "height/z0/0_-2.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": -2,
+      "file": "tiles/z0/1_-2.png",
+      "heightFile": "height/z0/1_-2.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": -2,
+      "file": "tiles/z0/2_-2.png",
+      "heightFile": "height/z0/2_-2.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": -1,
+      "file": "tiles/z0/-4_-1.png",
+      "heightFile": "height/z0/-4_-1.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": -1,
+      "file": "tiles/z0/-3_-1.png",
+      "heightFile": "height/z0/-3_-1.png",
+      "chunks": 240,
+      "blocks": 245760
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": -1,
+      "file": "tiles/z0/-2_-1.png",
+      "heightFile": "height/z0/-2_-1.png",
+      "chunks": 256,
+      "blocks": 262144
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": -1,
+      "file": "tiles/z0/-1_-1.png",
+      "heightFile": "height/z0/-1_-1.png",
+      "chunks": 250,
+      "blocks": 259422
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": -1,
+      "file": "tiles/z0/0_-1.png",
+      "heightFile": "height/z0/0_-1.png",
+      "chunks": 183,
+      "blocks": 188972
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": -1,
+      "file": "tiles/z0/1_-1.png",
+      "heightFile": "height/z0/1_-1.png",
+      "chunks": 10,
+      "blocks": 10240
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": -1,
+      "file": "tiles/z0/2_-1.png",
+      "heightFile": "height/z0/2_-1.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": 0,
+      "file": "tiles/z0/-4_0.png",
+      "heightFile": "height/z0/-4_0.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": 0,
+      "file": "tiles/z0/-3_0.png",
+      "heightFile": "height/z0/-3_0.png",
+      "chunks": 225,
+      "blocks": 134400
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": 0,
+      "file": "tiles/z0/-2_0.png",
+      "heightFile": "height/z0/-2_0.png",
+      "chunks": 256,
+      "blocks": 380815
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": 0,
+      "file": "tiles/z0/-1_0.png",
+      "heightFile": "height/z0/-1_0.png",
+      "chunks": 256,
+      "blocks": 1182298
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": 0,
+      "file": "tiles/z0/0_0.png",
+      "heightFile": "height/z0/0_0.png",
+      "chunks": 256,
+      "blocks": 264523
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": 0,
+      "file": "tiles/z0/1_0.png",
+      "heightFile": "height/z0/1_0.png",
+      "chunks": 41,
+      "blocks": 41984
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": 0,
+      "file": "tiles/z0/2_0.png",
+      "heightFile": "height/z0/2_0.png",
+      "chunks": 1,
+      "blocks": 1024
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": 1,
+      "file": "tiles/z0/-4_1.png",
+      "heightFile": "height/z0/-4_1.png",
+      "chunks": 9,
+      "blocks": 9216
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": 1,
+      "file": "tiles/z0/-3_1.png",
+      "heightFile": "height/z0/-3_1.png",
+      "chunks": 193,
+      "blocks": 95246
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": 1,
+      "file": "tiles/z0/-2_1.png",
+      "heightFile": "height/z0/-2_1.png",
+      "chunks": 256,
+      "blocks": 580879
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": 1,
+      "file": "tiles/z0/-1_1.png",
+      "heightFile": "height/z0/-1_1.png",
+      "chunks": 256,
+      "blocks": 1948805
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": 1,
+      "file": "tiles/z0/0_1.png",
+      "heightFile": "height/z0/0_1.png",
+      "chunks": 256,
+      "blocks": 262144
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": 1,
+      "file": "tiles/z0/1_1.png",
+      "heightFile": "height/z0/1_1.png",
+      "chunks": 192,
+      "blocks": 196608
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": 1,
+      "file": "tiles/z0/2_1.png",
+      "heightFile": "height/z0/2_1.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": 2,
+      "file": "tiles/z0/-4_2.png",
+      "heightFile": "height/z0/-4_2.png",
+      "chunks": 1,
+      "blocks": 1024
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": 2,
+      "file": "tiles/z0/-3_2.png",
+      "heightFile": "height/z0/-3_2.png",
+      "chunks": 218,
+      "blocks": 120832
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": 2,
+      "file": "tiles/z0/-2_2.png",
+      "heightFile": "height/z0/-2_2.png",
+      "chunks": 256,
+      "blocks": 51
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": 2,
+      "file": "tiles/z0/-1_2.png",
+      "heightFile": "height/z0/-1_2.png",
+      "chunks": 256,
+      "blocks": 12288
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": 2,
+      "file": "tiles/z0/0_2.png",
+      "heightFile": "height/z0/0_2.png",
+      "chunks": 204,
+      "blocks": 208896
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": 2,
+      "file": "tiles/z0/1_2.png",
+      "heightFile": "height/z0/1_2.png",
+      "chunks": 72,
+      "blocks": 73728
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": 2,
+      "file": "tiles/z0/2_2.png",
+      "heightFile": "height/z0/2_2.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": 3,
+      "file": "tiles/z0/-4_3.png",
+      "heightFile": "height/z0/-4_3.png",
+      "chunks": 16,
+      "blocks": 16384
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": 3,
+      "file": "tiles/z0/-3_3.png",
+      "heightFile": "height/z0/-3_3.png",
+      "chunks": 256,
+      "blocks": 204027
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": 3,
+      "file": "tiles/z0/-2_3.png",
+      "heightFile": "height/z0/-2_3.png",
+      "chunks": 232,
+      "blocks": 79595
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": 3,
+      "file": "tiles/z0/-1_3.png",
+      "heightFile": "height/z0/-1_3.png",
+      "chunks": 160,
+      "blocks": 10816
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": 3,
+      "file": "tiles/z0/0_3.png",
+      "heightFile": "height/z0/0_3.png",
+      "chunks": 58,
+      "blocks": 61663
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": 3,
+      "file": "tiles/z0/1_3.png",
+      "heightFile": "height/z0/1_3.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": 3,
+      "file": "tiles/z0/2_3.png",
+      "heightFile": "height/z0/2_3.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": 4,
+      "file": "tiles/z0/-4_4.png",
+      "heightFile": "height/z0/-4_4.png",
+      "chunks": 4,
+      "blocks": 4096
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": 4,
+      "file": "tiles/z0/-3_4.png",
+      "heightFile": "height/z0/-3_4.png",
+      "chunks": 64,
+      "blocks": 65536
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": 4,
+      "file": "tiles/z0/-2_4.png",
+      "heightFile": "height/z0/-2_4.png",
+      "chunks": 25,
+      "blocks": 25600
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": 4,
+      "file": "tiles/z0/-1_4.png",
+      "heightFile": "height/z0/-1_4.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": 4,
+      "file": "tiles/z0/0_4.png",
+      "heightFile": "height/z0/0_4.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": 4,
+      "file": "tiles/z0/1_4.png",
+      "heightFile": "height/z0/1_4.png",
+      "chunks": 0,
+      "blocks": 0
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": 4,
+      "file": "tiles/z0/2_4.png",
+      "heightFile": "height/z0/2_4.png",
+      "chunks": 0,
+      "blocks": 0
+    }
+  ],
+  "heightTiles": [
+    {
+      "z": 0,
+      "x": -4,
+      "y": -4,
+      "file": "height/z0/-4_-4.png"
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": -4,
+      "file": "height/z0/-3_-4.png"
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": -4,
+      "file": "height/z0/-2_-4.png"
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": -4,
+      "file": "height/z0/-1_-4.png"
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": -4,
+      "file": "height/z0/0_-4.png"
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": -4,
+      "file": "height/z0/1_-4.png"
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": -4,
+      "file": "height/z0/2_-4.png"
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": -3,
+      "file": "height/z0/-4_-3.png"
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": -3,
+      "file": "height/z0/-3_-3.png"
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": -3,
+      "file": "height/z0/-2_-3.png"
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": -3,
+      "file": "height/z0/-1_-3.png"
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": -3,
+      "file": "height/z0/0_-3.png"
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": -3,
+      "file": "height/z0/1_-3.png"
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": -3,
+      "file": "height/z0/2_-3.png"
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": -2,
+      "file": "height/z0/-4_-2.png"
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": -2,
+      "file": "height/z0/-3_-2.png"
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": -2,
+      "file": "height/z0/-2_-2.png"
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": -2,
+      "file": "height/z0/-1_-2.png"
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": -2,
+      "file": "height/z0/0_-2.png"
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": -2,
+      "file": "height/z0/1_-2.png"
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": -2,
+      "file": "height/z0/2_-2.png"
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": -1,
+      "file": "height/z0/-4_-1.png"
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": -1,
+      "file": "height/z0/-3_-1.png"
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": -1,
+      "file": "height/z0/-2_-1.png"
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": -1,
+      "file": "height/z0/-1_-1.png"
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": -1,
+      "file": "height/z0/0_-1.png"
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": -1,
+      "file": "height/z0/1_-1.png"
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": -1,
+      "file": "height/z0/2_-1.png"
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": 0,
+      "file": "height/z0/-4_0.png"
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": 0,
+      "file": "height/z0/-3_0.png"
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": 0,
+      "file": "height/z0/-2_0.png"
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": 0,
+      "file": "height/z0/-1_0.png"
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": 0,
+      "file": "height/z0/0_0.png"
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": 0,
+      "file": "height/z0/1_0.png"
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": 0,
+      "file": "height/z0/2_0.png"
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": 1,
+      "file": "height/z0/-4_1.png"
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": 1,
+      "file": "height/z0/-3_1.png"
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": 1,
+      "file": "height/z0/-2_1.png"
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": 1,
+      "file": "height/z0/-1_1.png"
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": 1,
+      "file": "height/z0/0_1.png"
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": 1,
+      "file": "height/z0/1_1.png"
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": 1,
+      "file": "height/z0/2_1.png"
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": 2,
+      "file": "height/z0/-4_2.png"
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": 2,
+      "file": "height/z0/-3_2.png"
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": 2,
+      "file": "height/z0/-2_2.png"
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": 2,
+      "file": "height/z0/-1_2.png"
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": 2,
+      "file": "height/z0/0_2.png"
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": 2,
+      "file": "height/z0/1_2.png"
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": 2,
+      "file": "height/z0/2_2.png"
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": 3,
+      "file": "height/z0/-4_3.png"
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": 3,
+      "file": "height/z0/-3_3.png"
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": 3,
+      "file": "height/z0/-2_3.png"
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": 3,
+      "file": "height/z0/-1_3.png"
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": 3,
+      "file": "height/z0/0_3.png"
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": 3,
+      "file": "height/z0/1_3.png"
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": 3,
+      "file": "height/z0/2_3.png"
+    },
+    {
+      "z": 0,
+      "x": -4,
+      "y": 4,
+      "file": "height/z0/-4_4.png"
+    },
+    {
+      "z": 0,
+      "x": -3,
+      "y": 4,
+      "file": "height/z0/-3_4.png"
+    },
+    {
+      "z": 0,
+      "x": -2,
+      "y": 4,
+      "file": "height/z0/-2_4.png"
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": 4,
+      "file": "height/z0/-1_4.png"
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": 4,
+      "file": "height/z0/0_4.png"
+    },
+    {
+      "z": 0,
+      "x": 1,
+      "y": 4,
+      "file": "height/z0/1_4.png"
+    },
+    {
+      "z": 0,
+      "x": 2,
+      "y": 4,
+      "file": "height/z0/2_4.png"
+    }
+  ],
+  "missing": [],
+  "totals": {
+    "tiles": 63,
+    "tileBytes": 110022,
+    "heightBytes": 52419,
+    "bytes": 162441
+  },
+  "elapsedMs": 3965,
+  "resume": false,
+  "shading": "cross-region"
+}

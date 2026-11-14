@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AMC Minecraft Community · 股票行情</title>
+<script>
+/* AMC 前端配置：部署时只改这里 */
+window.MCW_CONFIG = {
+  /* 实时数据服务基址（Cloudflare Pages Functions）；留空 = 未连接 */
+  api: "https://amc-world.pages.dev",
+  /* 公网连接地址由 /api/link/start 返回，前端不再保存静态地址 */
+  port: 25565,
+  /* 服务器支持的最低版本（ViaVersion 协议翻译，1.21.11 ~ 26.3 都能进） */
+  version: "1.21.11 ~ 26.3",
+  /* Cloudflare Turnstile 公开 sitekey（managed 模式） */
+  turnstileSiteKey: "0x4AAAAAAF8pZyOllpMEJe5F",
+  /* 账号页地址；留空 = 暂未开放 */
+  accountUrl: "",
+  /* 内部来源白名单：只按 URL.hostname 精确匹配，禁止字符串前缀判断 */
+  internalHosts: [
+    "amazing-minecraft.pages.dev",
+    "amc-world.pages.dev",
+    "omc-world.github.io",
+    "omc-studio.github.io",
+    "127.0.0.1",
+    "localhost"
+  ],
+  /* 访问门模式：on-demand（默认，只在敏感动作前验证）| all（全站强制） */
+  gateMode: "on-demand",
+  /* 轮询间隔（毫秒） */
+  pollMs: 5000
+};
+</script>
+<script defer src="./assets/js/gate.js?v=20261114g"></script>
+<meta name="description" content="AMC Minecraft Community 股票实时行情与下单。">
+<link rel="preconnect" href="https://amc-world.pages.dev" crossorigin>
+<link rel="dns-prefetch" href="https://challenges.cloudflare.com">
+<link rel="icon" href="./favicon.svg" type="image/svg+xml">
+<style>
+/* AMC — 城市信息屏 / 行情屏样式（零依赖） */
+:root{
+  --bg:#0f1115;
+  --panel:#161a20;
+  --panel-2:#1b2028;
+  --line:#262b33;
+  --line-soft:#1e232b;
+  --text:#c9d1d9;
+  --muted:#7d8590;
+  --accent:#f2c14e;
+  --up:#4ade80;
+  --down:#f85149;
+  --warn:#d29922;
+  --r:2px;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Consolas,"Liberation Mono",monospace;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font:14px/1.6 "Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  font-variant-numeric:tabular-nums;
+}
+a{color:var(--text);text-decoration:none}
+a:hover{color:var(--accent)}
+h1,h2,h3{margin:0;font-weight:600;letter-spacing:.02em}
+p{margin:0}
+ul,ol{margin:0;padding-left:18px}
+button,input,select{font:inherit;color:inherit}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+
+/* 顶栏 */
+.topbar{border-bottom:1px solid var(--line);background:var(--bg)}
+.topbar-in{display:flex;align-items:center;gap:22px;height:52px}
+.brand{font:600 15px/1 var(--mono);letter-spacing:.16em;color:var(--accent);white-space:nowrap}
+.brand span{color:var(--muted);letter-spacing:.08em}
+.nav{display:flex;gap:18px;margin-left:auto;font-size:13px}
+.nav a{padding:6px 0;border-bottom:2px solid transparent;color:var(--muted)}
+.nav a:hover{color:var(--text)}
+.nav a.active{color:var(--text);border-bottom-color:var(--accent)}
+.account{white-space:nowrap}
+.account.is-off{color:var(--muted);border-color:var(--line);cursor:not-allowed}
+.account.is-off [data-account-note]{font-size:11px;margin-left:4px}
+
+/* 页头 */
+.page-head{padding:26px 0 14px}
+.page-head h1{font-size:22px}
+.page-head .sub{margin-top:6px;color:var(--muted);font-size:13px}
+.page-head .sub b{color:var(--text);font-weight:500}
+
+/* 实时状态条 */
+.statusbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 26px;padding:12px 14px;
+  border:1px solid var(--line);border-radius:var(--r);background:var(--panel);margin-bottom:18px}
+.stat-inline{display:flex;align-items:baseline;gap:8px}
+.stat-inline .k{color:var(--muted);font-size:12px}
+.stat-inline .v{font:600 15px/1.2 var(--mono)}
+.src{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--muted);display:inline-block}
+.dot.ok{background:var(--up)}
+.dot.warn{background:var(--warn)}
+.dot.off{background:var(--down)}
+
+/* 面板 */
+.panel{border:1px solid var(--line);border-radius:var(--r);background:var(--panel);margin-bottom:18px}
+.panel-head{display:flex;align-items:center;gap:12px;padding:11px 14px;border-bottom:1px solid var(--line-soft)}
+.panel-head h2{font-size:13px;letter-spacing:.06em;color:var(--muted);font-weight:600}
+.panel-head .meta{margin-left:auto;font:12px var(--mono);color:var(--muted)}
+.panel-body{padding:14px}
+.grid-main{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:18px}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+
+/* 图表 */
+.chart{position:relative;min-height:180px}
+.chart svg{display:block;width:100%}
+.chart-empty{display:flex;align-items:center;justify-content:center;height:180px;
+  color:var(--muted);font-size:13px;border:1px dashed var(--line);border-radius:var(--r)}
+.chart .axis-y,.chart .axis-x{font-family:var(--mono)}
+.chart .chart-hit{cursor:crosshair}
+.spark{display:block}
+.spark-empty{color:var(--muted)}
+
+/* 表格 */
+.tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th,.tbl td{padding:9px 10px;border-bottom:1px solid var(--line-soft);text-align:left;white-space:nowrap}
+.tbl th{position:sticky;top:0;background:var(--panel);color:var(--muted);font-size:11px;
+  letter-spacing:.08em;font-weight:600;z-index:1;border-bottom:1px solid var(--line)}
+.tbl tbody tr:hover{background:var(--panel-2)}
+.tbl td.num,.tbl th.num{text-align:right;font-family:var(--mono)}
+.tbl .sym{font-family:var(--mono);color:var(--accent)}
+.tbl .name{color:var(--muted)}
+.tbl tbody tr{cursor:pointer}
+.tbl tbody tr.sel{background:var(--panel-2);box-shadow:inset 2px 0 0 var(--accent)}
+.up{color:var(--up)}
+.down{color:var(--down)}
+.flat{color:var(--muted)}
+
+/* 入口卡片 */
+.cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.card{display:block;padding:14px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel)}
+.card:hover{border-color:var(--accent);color:var(--text)}
+.card .t{font-size:14px;font-weight:600}
+.card .d{margin-top:4px;color:var(--muted);font-size:12px}
+
+/* 按钮与表单 */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:34px;padding:0 14px;
+  border:1px solid var(--line);border-radius:var(--r);background:transparent;color:var(--text);
+  font-size:13px;cursor:pointer}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn-primary{border-color:var(--accent);color:var(--accent)}
+.btn-primary:hover{background:rgba(242,193,78,.08)}
+.btn-sm{height:28px;padding:0 10px;font-size:12px}
+.btn[disabled],.btn.is-off{opacity:.45;cursor:not-allowed;border-color:var(--line);color:var(--muted)}
+.btn-block{width:100%}
+.input{width:100%;height:34px;padding:0 10px;border:1px solid var(--line);border-radius:var(--r);
+  background:var(--bg);color:var(--text);font-family:var(--mono);font-size:13px}
+.input:focus{outline:none;border-color:var(--accent)}
+label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
+.field{margin-bottom:12px}
+.seg{display:flex;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-bottom:12px}
+.seg button{flex:1;height:32px;border:0;background:transparent;color:var(--muted);cursor:pointer;font-size:13px}
+.seg button[aria-pressed="true"]{background:var(--panel-2);color:var(--text)}
+.seg button.buy[aria-pressed="true"]{color:var(--up)}
+.seg button.sell[aria-pressed="true"]{color:var(--down)}
+.est{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line-soft);
+  color:var(--muted);font-size:12px}
+.est b{color:var(--text);font-family:var(--mono);font-weight:600}
+.msg{margin-top:10px;font-size:12px;color:var(--muted);min-height:18px}
+.msg.err{color:var(--down)}
+.msg.ok{color:var(--up)}
+
+/* 提示条 */
+.notice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--line);
+  border-left:2px solid var(--warn);border-radius:var(--r);background:var(--panel);color:var(--muted);
+  font-size:12px;margin-bottom:18px}
+.notice b{color:var(--text);font-weight:500}
+.notice code{font-family:var(--mono);color:var(--accent)}
+.hidden{display:none!important}
+.muted{color:var(--muted)}
+.mono{font-family:var(--mono)}
+.small{font-size:12px}
+.sep{color:var(--line)}
+.addr{font-family:var(--mono);color:var(--accent)}
+
+/* 详情头 */
+.detail-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 16px;margin-bottom:12px}
+.detail-head .sym{font:600 20px/1 var(--mono)}
+.detail-head .px{font:600 24px/1 var(--mono)}
+.detail-head .chg{font-family:var(--mono);font-size:13px}
+.kv{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 16px;margin-top:12px;font-size:12px}
+.kv.kv-1{grid-template-columns:1fr}
+.kv div{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line-soft)}
+.kv span{color:var(--muted)}
+.kv b{font-family:var(--mono);font-weight:500}
+
+/* 列表页脚 */
+.foot{border-top:1px solid var(--line);margin-top:28px;padding:16px 0 28px;color:var(--muted);font-size:12px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:8px 18px}
+
+/* toast */
+#toast-host{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;z-index:50}
+.toast{padding:8px 12px;border:1px solid var(--line);border-left:2px solid var(--accent);
+  border-radius:var(--r);background:var(--panel);color:var(--text);font-size:12px;
+  transition:opacity .2s,transform .2s}
+.toast.ok{border-left-color:var(--up)}
+.toast.err{border-left-color:var(--down)}
+
+/* 响应式 */
+@media (max-width:900px){
+  .grid-main{grid-template-columns:1fr}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nav{gap:12px;font-size:12px}
+}
+@media (max-width:640px){
+  .wrap{padding:0 14px}
+  .topbar-in{height:auto;padding:10px 0;flex-wrap:wrap;gap:8px 14px}
+  .nav{order:3;width:100%;margin-left:0;gap:14px;overflow-x:auto}
+  .brand{font-size:14px}
+  .account{margin-left:auto}
+  .page-head{padding:18px 0 10px}
+  .page-head h1{font-size:19px}
+  .cards{grid-template-columns:1fr 1fr}
+  .statusbar{gap:8px 16px}
+  .src{margin-left:0;width:100%}
+  .kv{grid-template-columns:1fr}
+}
+/* 账号 / 绑定 / 订单 */
+.form-row{display:flex;flex-wrap:wrap;gap:0 14px}
+.form-row .field{flex:1 1 180px;margin-bottom:10px}
+.code-row{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-top:12px}
+.bigcode{font:600 28px/1.2 var(--mono);letter-spacing:.28em;color:var(--accent);
+  padding:6px 12px 6px 16px;border:1px solid var(--line);border-radius:var(--r);background:var(--bg)}
+.panel-head .btn{margin-left:auto}
+@media (max-width:640px){
+  .form-row .field{flex:1 1 100%}
+  .bigcode{font-size:24px}
+}
+/* Turnstile 人机验证 */
+.ts-panel{margin-top:18px}
+.ts-box{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.ts-box #ts-widget{min-height:65px}
+.ts-note{margin:0}
+#ts-box{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line-soft)}
+
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" href="./index.html">AMC <span>Minecraft Community</span></a>
+    <nav class="nav">
+      <a href="./index.html">状态</a>
+      <a href="./stocks.html">股票</a>
+      <a href="./market.html">物品行情</a>
+      <a href="./play.html">进服</a>
+      <a href="./rules.html">规则</a>
+    </nav>
+    <a class="btn btn-sm account" data-account-link href="./play.html">账号绑定 <span data-account-note></span></a>
+  </div>
+</header>
+<main class="wrap">
+  <div class="page-head">
+    <h1>股票行情</h1>
+    <p class="sub">实时价格与涨跌，每 5 秒刷新；下单需游戏内绑定码。</p>
+  </div>
+
+  <section class="statusbar" aria-live="polite">
+    <div class="stat-inline"><span class="k">数据</span><span class="v" id="mkt-count">—</span><span class="k">只</span></div>
+    <div class="stat-inline"><span class="k">刷新</span><span class="v">5s</span></div>
+    <div class="src"><span class="dot off" id="src-dot"></span><span id="src-text">连接中</span><span class="sep">·</span><span id="src-time"></span></div>
+  </section>
+
+  <div class="notice hidden" id="offline-note">
+    <span class="dot off"></span>
+    <div><b>服务端未连接</b> · <span id="offline-detail">等待服务端恢复，页面每 5 秒重试。</span></div>
+  </div>
+
+  <div class="grid-main">
+    <section class="panel">
+      <div class="panel-head"><h2>全部股票</h2><span class="meta">点击查看</span></div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr>
+            <th>代码</th><th>名称</th><th class="num">现价</th><th class="num">涨跌</th><th class="num">成交量</th><th>走势</th>
+          </tr></thead>
+          <tbody id="stock-body"><tr><td colspan="6" class="muted">暂无数据</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div>
+      <section class="panel">
+        <div class="panel-head"><h2>详情</h2><span class="meta" id="d-updated">—</span></div>
+        <div class="panel-body">
+          <div class="detail-head">
+            <span class="sym" id="d-sym">—</span>
+            <span class="px" id="d-price">—</span>
+            <span class="chg" id="d-chg">—</span>
+          </div>
+          <p class="small muted" id="d-name">—</p>
+          <div class="chart" id="d-chart"><div class="chart-empty">暂无数据</div></div>
+          <div class="kv">
+            <div><span>成交量</span><b id="d-vol">—</b></div>
+            <div><span>市值</span><b id="d-cap">—</b></div>
+            <div><span>持有人</span><b id="d-holders">—</b></div>
+            <div><span>板块</span><b id="d-sector">—</b></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head"><h2>下单</h2><span class="meta" id="o-meta">—</span></div>
+        <div class="panel-body">
+          <div class="seg" role="group" aria-label="买卖方向">
+            <button type="button" class="buy" data-side="buy" aria-pressed="true">买入</button>
+            <button type="button" class="sell" data-side="sell" aria-pressed="false">卖出</button>
+          </div>
+          <div class="field">
+            <label class="f" for="o-qty">数量</label>
+            <input class="input" id="o-qty" type="number" min="1" step="1" value="1" inputmode="numeric">
+          </div>
+          <div class="field">
+            <label class="f" for="o-link">绑定码</label>
+            <input class="input" id="o-link" type="text" maxlength="16" autocomplete="off" placeholder="游戏内 /link 获取">
+          </div>
+          <div class="est"><span>参考价</span><b id="o-price">—</b></div>
+          <div class="est"><span>预计金额</span><b id="o-total">—</b></div>
+          <div class="est"><span>余额</span><b id="o-balance">—</b></div>
+          <button class="btn btn-primary btn-block" type="button" id="o-submit" disabled>买入</button>
+          <p class="msg" id="o-msg"></p>
+          <p class="small muted">也可在游戏内使用 <code class="mono">/stock buy &lt;代码&gt; &lt;数量&gt;</code></p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <section class="panel ts-panel">
+    <div class="panel-head"><h2>人机验证</h2><span class="meta" id="ts-state">未验证</span></div>
+    <div class="panel-body">
+      <div class="ts-box">
+        <p class="small muted ts-note" id="ts-note">需要验证时打开独立验证页，结果在本机保留 5 分钟。</p>
+        <a class="btn btn-sm" data-verify-link href="./verify.html">打开验证页</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot"><div class="wrap"><span>AMC Minecraft Community</span><span class="sep">·</span><span>行情与成交以服务端返回为准</span><span class="sep">·</span><span>© <span data-year>2026</span></span></div></footer>
+<div id="toast-host"></div>
+<script src="./assets/js/util.js?v=20261114g" defer></script>
+<script src="./assets/js/from.js?v=20261114g" defer></script>
+<script src="./assets/js/api.js?v=20261114g" defer></script>
+<script src="./assets/js/live.js?v=20261114g" defer></script>
+<script src="./assets/js/chart.js?v=20261114g" defer></script>
+<script src="./assets/js/nav.js?v=20261114g" defer></script>
+<script src="./assets/js/stocks.js?v=20261114g" defer></script>
+</body>
+</html>

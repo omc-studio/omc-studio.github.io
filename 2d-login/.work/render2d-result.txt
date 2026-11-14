@@ -1,0 +1,1 @@
+RESULT=RENDER2D_OK chunks=6293 withBlocks=4159 legacyRendered=0 tiles=63 missing=0 blocks=7848135 bytes=162441 ms=3965

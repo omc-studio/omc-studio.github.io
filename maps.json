@@ -1,0 +1,167 @@
+{
+  "generatedAt": "2026-11-14T03:08:24.812Z",
+  "maps": [
+    {
+      "key": "login",
+      "name": "登录服",
+      "label": "登录服",
+      "levelName": "OMC-Login",
+      "spawn": {
+        "x": -176,
+        "y": 134,
+        "z": 280
+      },
+      "bounds": {
+        "min": [
+          -816,
+          0,
+          -784
+        ],
+        "max": [
+          575,
+          255,
+          1087
+        ]
+      },
+      "camera": {
+        "center": [
+          -264,
+          108,
+          280
+        ],
+        "diag": 1532,
+        "pos": [
+          118.8,
+          455.6,
+          836.9
+        ],
+        "note": "dense-bbox 1392"
+      },
+      "tiles2d": "2d-login",
+      "tiles3d": "3d-login",
+      "blocks": 7850597,
+      "chunks": 6293
+    },
+    {
+      "key": "queue",
+      "name": "排队服",
+      "label": "排队服",
+      "levelName": "OMC-Queue",
+      "spawn": {
+        "x": 0,
+        "y": 6,
+        "z": 0
+      },
+      "bounds": {
+        "min": [
+          -21,
+          0,
+          -21
+        ],
+        "max": [
+          22,
+          12,
+          22
+        ]
+      },
+      "camera": {
+        "center": [
+          0.5,
+          6,
+          0.5
+        ],
+        "diag": 61.984,
+        "pos": [
+          34.59,
+          36.99,
+          50.09
+        ]
+      },
+      "tiles2d": "2d-queue",
+      "tiles3d": "3d-queue",
+      "blocks": 12761,
+      "chunks": 16
+    },
+    {
+      "key": "shop",
+      "name": "商店服",
+      "label": "商店服",
+      "levelName": "OMC-Shop",
+      "spawn": {
+        "x": 0,
+        "y": 6,
+        "z": 0
+      },
+      "bounds": {
+        "min": [
+          -38,
+          0,
+          -11
+        ],
+        "max": [
+          38,
+          11,
+          12
+        ]
+      },
+      "camera": {
+        "center": [
+          0,
+          5.5,
+          0.5
+        ],
+        "diag": 80.162,
+        "pos": [
+          44.09,
+          45.58,
+          64.63
+        ]
+      },
+      "tiles2d": "2d-shop",
+      "tiles3d": "3d-shop",
+      "blocks": 13112,
+      "chunks": 12
+    },
+    {
+      "key": "main",
+      "name": "主服",
+      "label": "主服",
+      "levelName": "OMC-Main",
+      "spawn": {
+        "x": -592,
+        "y": 53,
+        "z": -32
+      },
+      "bounds": {
+        "min": [
+          -816,
+          -64,
+          -208
+        ],
+        "max": [
+          191,
+          131,
+          191
+        ]
+      },
+      "camera": {
+        "center": [
+          -336,
+          54,
+          -16
+        ],
+        "diag": 1121,
+        "pos": [
+          -62.2,
+          303,
+          382.3
+        ],
+        "note": "dense-bbox 1019"
+      },
+      "tiles2d": "2d-main",
+      "tiles3d": "3d-main",
+      "blocks": 34527137,
+      "chunks": 3326
+    }
+  ]
+}

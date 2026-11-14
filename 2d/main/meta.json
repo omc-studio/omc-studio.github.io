@@ -1,0 +1,165 @@
+{
+  "generatedAt": "2026-11-13T09:05:57.964Z",
+  "world": {
+    "levelName": "OMC-Main",
+    "dataVersion": 4790,
+    "gameType": 1,
+    "spawn": {
+      "x": 0,
+      "y": 6,
+      "z": 6
+    }
+  },
+  "tileSize": 256,
+  "blockPerPixel": 1,
+  "zoom": {
+    "min": 0.25,
+    "max": 8,
+    "default": 1
+  },
+  "bounds": {
+    "chunks": {
+      "minX": -5,
+      "maxX": 4,
+      "minZ": -5,
+      "maxZ": 4
+    },
+    "blocks": {
+      "minX": -80,
+      "maxX": 79,
+      "minY": 0,
+      "maxY": 28,
+      "minZ": -80,
+      "maxZ": 79
+    },
+    "world": {
+      "minX": -80,
+      "maxX": 79,
+      "minZ": -80,
+      "maxZ": 79
+    }
+  },
+  "chunkStats": {
+    "total": 100,
+    "withBlocks": 100,
+    "empty": 0,
+    "corrupt": 0
+  },
+  "blockTop10": [
+    [
+      "stone",
+      76800
+    ],
+    [
+      "bedrock",
+      25600
+    ],
+    [
+      "dirt",
+      25600
+    ],
+    [
+      "grass_block",
+      13853
+    ],
+    [
+      "stone_bricks",
+      9302
+    ],
+    [
+      "oak_planks",
+      6323
+    ],
+    [
+      "polished_andesite",
+      5400
+    ],
+    [
+      "smooth_stone",
+      3620
+    ],
+    [
+      "spruce_planks",
+      3105
+    ],
+    [
+      "smooth_quartz",
+      2878
+    ]
+  ],
+  "blockTotal": 179224,
+  "tiles": [
+    {
+      "z": 0,
+      "x": -1,
+      "y": -1,
+      "file": "tiles/z0/-1_-1.png",
+      "heightFile": "height/z0/-1_-1.png",
+      "chunks": 25,
+      "blocks": 45224
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": -1,
+      "file": "tiles/z0/0_-1.png",
+      "heightFile": "height/z0/0_-1.png",
+      "chunks": 25,
+      "blocks": 44392
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": 0,
+      "file": "tiles/z0/-1_0.png",
+      "heightFile": "height/z0/-1_0.png",
+      "chunks": 25,
+      "blocks": 44579
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": 0,
+      "file": "tiles/z0/0_0.png",
+      "heightFile": "height/z0/0_0.png",
+      "chunks": 25,
+      "blocks": 45029
+    }
+  ],
+  "heightTiles": [
+    {
+      "z": 0,
+      "x": -1,
+      "y": -1,
+      "file": "height/z0/-1_-1.png"
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": -1,
+      "file": "height/z0/0_-1.png"
+    },
+    {
+      "z": 0,
+      "x": -1,
+      "y": 0,
+      "file": "height/z0/-1_0.png"
+    },
+    {
+      "z": 0,
+      "x": 0,
+      "y": 0,
+      "file": "height/z0/0_0.png"
+    }
+  ],
+  "missing": [],
+  "totals": {
+    "tiles": 4,
+    "tileBytes": 9211,
+    "heightBytes": 3020,
+    "bytes": 12231
+  },
+  "elapsedMs": 294,
+  "resume": false,
+  "shading": "cross-region"
+}

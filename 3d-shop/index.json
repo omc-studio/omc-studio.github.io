@@ -1,0 +1,359 @@
+{
+  "generatedAt": "2026-11-14T01:37:18.304Z",
+  "world": {
+    "levelName": "OMC-Shop",
+    "dataVersion": 4790,
+    "spawn": {
+      "x": 0,
+      "y": 6,
+      "z": 0
+    }
+  },
+  "format": {
+    "magic": "M3DG",
+    "version": 1,
+    "headerBytes": 48,
+    "vertexBytes": 20,
+    "layout": "magic[4] version:u16 flags:u16 cx:i32 cz:i32 bboxMin:f32x3 bboxMax:f32x3 vertexCount:u32 indexCount:u32; vertices: pos:f32x3 normal:i8x3 pad:u8 color:u8x3 a:u8; indices:u32"
+  },
+  "chunkSize": 16,
+  "blocksBounds": {
+    "min": [
+      -38,
+      0,
+      -11
+    ],
+    "max": [
+      38,
+      11,
+      12
+    ]
+  },
+  "chunkTotal": 12,
+  "chunkStats": {
+    "total": 12,
+    "withGeometry": 12,
+    "empty": 0,
+    "blocks": 13112,
+    "corrupt": 0,
+    "legacy": 0
+  },
+  "blockTop10": [
+    [
+      "stone",
+      5244
+    ],
+    [
+      "bedrock",
+      1748
+    ],
+    [
+      "dirt",
+      1748
+    ],
+    [
+      "stone_bricks",
+      1272
+    ],
+    [
+      "grass_block",
+      580
+    ],
+    [
+      "chiseled_stone_bricks",
+      464
+    ],
+    [
+      "oak_planks",
+      430
+    ],
+    [
+      "spruce_planks",
+      420
+    ],
+    [
+      "glass",
+      258
+    ],
+    [
+      "smooth_quartz",
+      218
+    ]
+  ],
+  "chunks": [
+    {
+      "cx": -1,
+      "cz": -1,
+      "file": "tiles/c-1_-1.bin",
+      "blocks": 1352,
+      "vertices": 608,
+      "triangles": 304,
+      "quads": 152,
+      "bytes": 15856,
+      "bbox": {
+        "min": [
+          -16,
+          0,
+          -11
+        ],
+        "max": [
+          0,
+          11,
+          0
+        ]
+      }
+    },
+    {
+      "cx": -1,
+      "cz": 0,
+      "file": "tiles/c-1_0.bin",
+      "blocks": 1448,
+      "vertices": 616,
+      "triangles": 308,
+      "quads": 154,
+      "bytes": 16064,
+      "bbox": {
+        "min": [
+          -16,
+          0,
+          0
+        ],
+        "max": [
+          0,
+          11,
+          12
+        ]
+      }
+    },
+    {
+      "cx": -2,
+      "cz": -1,
+      "file": "tiles/c-2_-1.bin",
+      "blocks": 1311,
+      "vertices": 548,
+      "triangles": 274,
+      "quads": 137,
+      "bytes": 14296,
+      "bbox": {
+        "min": [
+          -32,
+          0,
+          -11
+        ],
+        "max": [
+          -16,
+          11,
+          0
+        ]
+      }
+    },
+    {
+      "cx": -2,
+      "cz": 0,
+      "file": "tiles/c-2_0.bin",
+      "blocks": 1411,
+      "vertices": 568,
+      "triangles": 284,
+      "quads": 142,
+      "bytes": 14816,
+      "bbox": {
+        "min": [
+          -32,
+          0,
+          0
+        ],
+        "max": [
+          -16,
+          11,
+          12
+        ]
+      }
+    },
+    {
+      "cx": -3,
+      "cz": -1,
+      "file": "tiles/c-3_-1.bin",
+      "blocks": 503,
+      "vertices": 236,
+      "triangles": 118,
+      "quads": 59,
+      "bytes": 6184,
+      "bbox": {
+        "min": [
+          -38,
+          0,
+          -11
+        ],
+        "max": [
+          -32,
+          11,
+          0
+        ]
+      }
+    },
+    {
+      "cx": -3,
+      "cz": 0,
+      "file": "tiles/c-3_0.bin",
+      "blocks": 543,
+      "vertices": 220,
+      "triangles": 110,
+      "quads": 55,
+      "bytes": 5768,
+      "bbox": {
+        "min": [
+          -38,
+          0,
+          0
+        ],
+        "max": [
+          -32,
+          11,
+          12
+        ]
+      }
+    },
+    {
+      "cx": 0,
+      "cz": -1,
+      "file": "tiles/c0_-1.bin",
+      "blocks": 1340,
+      "vertices": 604,
+      "triangles": 302,
+      "quads": 151,
+      "bytes": 15752,
+      "bbox": {
+        "min": [
+          0,
+          0,
+          -11
+        ],
+        "max": [
+          16,
+          11,
+          0
+        ]
+      }
+    },
+    {
+      "cx": 0,
+      "cz": 0,
+      "file": "tiles/c0_0.bin",
+      "blocks": 1436,
+      "vertices": 608,
+      "triangles": 304,
+      "quads": 152,
+      "bytes": 15856,
+      "bbox": {
+        "min": [
+          0,
+          0,
+          0
+        ],
+        "max": [
+          16,
+          11,
+          12
+        ]
+      }
+    },
+    {
+      "cx": 1,
+      "cz": -1,
+      "file": "tiles/c1_-1.bin",
+      "blocks": 1312,
+      "vertices": 556,
+      "triangles": 278,
+      "quads": 139,
+      "bytes": 14504,
+      "bbox": {
+        "min": [
+          16,
+          0,
+          -11
+        ],
+        "max": [
+          32,
+          11,
+          0
+        ]
+      }
+    },
+    {
+      "cx": 1,
+      "cz": 0,
+      "file": "tiles/c1_0.bin",
+      "blocks": 1410,
+      "vertices": 560,
+      "triangles": 280,
+      "quads": 140,
+      "bytes": 14608,
+      "bbox": {
+        "min": [
+          16,
+          0,
+          0
+        ],
+        "max": [
+          32,
+          11,
+          12
+        ]
+      }
+    },
+    {
+      "cx": 2,
+      "cz": -1,
+      "file": "tiles/c2_-1.bin",
+      "blocks": 502,
+      "vertices": 216,
+      "triangles": 108,
+      "quads": 54,
+      "bytes": 5664,
+      "bbox": {
+        "min": [
+          32,
+          0,
+          -11
+        ],
+        "max": [
+          38,
+          11,
+          0
+        ]
+      }
+    },
+    {
+      "cx": 2,
+      "cz": 0,
+      "file": "tiles/c2_0.bin",
+      "blocks": 544,
+      "vertices": 232,
+      "triangles": 116,
+      "quads": 58,
+      "bytes": 6080,
+      "bbox": {
+        "min": [
+          32,
+          0,
+          0
+        ],
+        "max": [
+          38,
+          11,
+          12
+        ]
+      }
+    }
+  ],
+  "totals": {
+    "chunks": 12,
+    "vertices": 5572,
+    "triangles": 2786,
+    "quads": 1393,
+    "bytes": 145448,
+    "maxChunkBytes": 16064,
+    "maxChunk": "tiles/c-1_0.bin"
+  },
+  "elapsedMs": 132
+}
