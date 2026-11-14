@@ -188,6 +188,8 @@
   var keys = Object.create(null);
   var dragging = false, lastX = 0, lastY = 0;
   var chunks = [], queue = [], loading = 0, loaded = 0;
+  var shards = [], shardLoading = 0, shardDone = 0, indexMeta = null, legacy = false;
+  var SHARD_CONC = 3; // 同时拉取的分片数（每个分片约 1 KB gzip）
   var mode = 0; // 0 方块颜色 1 高度
   var sun = [0.42, 0.86, 0.30];
   var fps = 0, frames = 0, fpsT = performance.now();
@@ -288,6 +290,9 @@
     }
     chunks = [];
     queue = [];
+    shards = [];
+    shardLoading = 0;
+    shardDone = 0;
     loading = 0;
     loaded = 0;
     drawCount = 0;
@@ -305,13 +310,7 @@
     var name = w.name || w.label || w.key;
     el('sub').textContent = name + ' · ' + index.chunkStats.blocks + ' 方块 · ' +
       index.totals.triangles + ' 三角形 · ' + (index.totals.bytes / 1024).toFixed(1) + ' KB';
-    var ymin = Infinity, ymax = -Infinity;
-    for (var i = 0; i < index.chunks.length; i++) {
-      var c = index.chunks[i];
-      ymin = Math.min(ymin, c.bbox.min[1]);
-      ymax = Math.max(ymax, c.bbox.max[1]);
-    }
-    if (isFinite(ymin)) yRange = [ymin, ymax];
+    // 垂直范围由 installIndex 从 manifest.yRange 或 legacy chunks 里取
     // 默认视角按建筑包围盒取景（世界范围很大，按世界取景会看不到建筑）
     var bb = index.blocksBounds;
     var center = bb ? [(bb.min[0] + bb.max[0]) / 2, (bb.min[1] + bb.max[1]) / 2, (bb.min[2] + bb.max[2]) / 2] : [0, 12, 0];
@@ -330,20 +329,135 @@
     lookToward(center);
     window.__CENTER__ = center;
     window.__DIAG__ = diag;
+    installIndex(index, w);
+  }
+
+  // ---------- 分片索引（format amc-3d-index/2）----------
+  // 入口 index.json 只含 manifest（约 2 KB）：版本、统计、分片表；
+  // 每个分片 idx/s<sx>_<sz>.json 装该 16x16 区块格内的紧凑元组：
+  // [cx, cz, partSuffix, vertices, minX, minY, minZ, maxX, maxY, maxZ, blocks]
+  // triangles = vertices / 2、quads = vertices / 4、bytes = 48 + vertices*20 + triangles*3*4 均可推导。
+  function makeChunk(c, root) {
+    var cx = (c.bbox.min[0] + c.bbox.max[0]) / 2;
+    var cy = (c.bbox.min[1] + c.bbox.max[1]) / 2;
+    var cz = (c.bbox.min[2] + c.bbox.max[2]) / 2;
+    return {
+      meta: c, src: root + String(c.file || '').replace(/^\/+/, ''),
+      loaded: false, vao: null, vbo: null, ibo: null, count: 0,
+      center: [cx, cy, cz],
+      dist: Math.hypot(cx - cam.pos[0], cy - cam.pos[1], cz - cam.pos[2])
+    };
+  }
+
+  function chunkFromTuple(t, root) {
+    var suffix = String(t[2] || '');
+    var v = t[3] | 0;
+    var meta = {
+      cx: t[0], cz: t[1],
+      file: 'tiles/c' + t[0] + '_' + t[1] + (suffix ? '_' + suffix : '') + '.bin',
+      vertices: v, triangles: v / 2, quads: v / 4,
+      bytes: 48 + v * 20 + (v / 2) * 3 * 4,
+      bbox: { min: [t[4], t[5], t[6]], max: [t[7], t[8], t[9]] },
+      blocks: t[10]
+    };
+    return makeChunk(meta, root);
+  }
+
+  function sortQueue() {
+    queue.sort(function (a, b) { return a.dist - b.dist; });
+  }
+
+  function loadShard(s) {
+    if (!s || s.state !== 0) return;
+    s.state = 1;
+    shardLoading++;
+    var gen = worldGen;
+    fetchJson(s.url).then(function (d) {
+      if (gen !== worldGen) return;
+      s.state = 2;
+      var root = indexMeta._root || '';
+      var add = (d && d.chunks) || [];
+      for (var i = 0; i < add.length; i++) {
+        var c = chunkFromTuple(add[i], root);
+        chunks.push(c);
+        queue.push(c);
+      }
+      sortQueue();
+      shardDone++;
+      el('loading').textContent = '加载分区 ' + shardDone + '/' + shards.length +
+        ' · 网格 ' + loaded + '/' + chunks.length;
+      if (queue.length) pump();
+    }).catch(function (e) {
+      if (gen !== worldGen) return;
+      s.state = 3;
+      s.error = String(e && e.message ? e.message : e);
+      el('sub').textContent = '分区加载失败: ' + s.error;
+    }).then(function () {
+      if (gen !== worldGen) return;
+      shardLoading--;
+      updateShards();
+    });
+  }
+
+  function updateShards() {
+    if (legacy || !shards.length) return;
+    var pend = [];
+    for (var i = 0; i < shards.length; i++) {
+      var s = shards[i];
+      if (s.state !== 0) continue;
+      if (frustum.length && !boxVisible(s.bbox)) continue;
+      s.dist = Math.hypot(s.center[0] - cam.pos[0], s.center[1] - cam.pos[1], s.center[2] - cam.pos[2]);
+      pend.push(s);
+    }
+    if (!pend.length) return;
+    pend.sort(function (a, b) { return a.dist - b.dist; });
+    for (var k = 0; k < pend.length && shardLoading < SHARD_CONC; k++) {
+      if (pend[k].state === 0) loadShard(pend[k]);
+    }
+  }
+
+  function installIndex(index, w) {
     var root = index._root || tileRoot(w.tiles3d);
-    chunks = index.chunks.map(function (c) {
-      var cx = (c.bbox.min[0] + c.bbox.max[0]) / 2, cy = (c.bbox.min[1] + c.bbox.max[1]) / 2, cz = (c.bbox.min[2] + c.bbox.max[2]) / 2;
-      return {
-        meta: c, src: root + String(c.file || '').replace(/^\/+/, ''),
-        loaded: false, vao: null, vbo: null, ibo: null, count: 0,
-        center: [cx, cy, cz],
-        dist: Math.hypot(cx - cam.pos[0], cy - cam.pos[1], cz - cam.pos[2])
-      };
-    }).sort(function (a, b) { return a.dist - b.dist; });
-    queue = chunks.slice();
-    el('loading').classList.add('show');
-    el('loading').textContent = '加载网格 0/' + queue.length;
+    indexMeta = index;
+    legacy = !(index && index.shards && index.shards.items);
+    chunks = [];
+    queue = [];
+    shards = [];
+    shardLoading = 0;
+    shardDone = 0;
+    if (legacy) {
+      for (var i = 0; i < (index.chunks || []).length; i++) chunks.push(makeChunk(index.chunks[i], root));
+      chunks.sort(function (a, b) { return a.dist - b.dist; });
+      queue = chunks.slice();
+      var ymin = Infinity, ymax = -Infinity;
+      for (var j = 0; j < chunks.length; j++) {
+        ymin = Math.min(ymin, chunks[j].meta.bbox.min[1]);
+        ymax = Math.max(ymax, chunks[j].meta.bbox.max[1]);
+      }
+      if (isFinite(ymin)) yRange = [ymin, ymax];
+      el('loading').classList.add('show');
+      el('loading').textContent = '加载网格 0/' + queue.length;
+    } else {
+      var sh = index.shards;
+      if (Array.isArray(index.yRange) && index.yRange.length === 2) yRange = index.yRange;
+      var base = root + String(sh.dir || '');
+      var pat = String(sh.file || 's{sx}_{sz}.json');
+      for (var k = 0; k < sh.items.length; k++) {
+        var it = sh.items[k];
+        var bb = { min: [it[3], it[4], it[5]], max: [it[6], it[7], it[8]] };
+        shards.push({
+          sx: it[0], sz: it[1], count: it[2], bbox: bb,
+          center: [(bb.min[0] + bb.max[0]) / 2, (bb.min[1] + bb.max[1]) / 2, (bb.min[2] + bb.max[2]) / 2],
+          url: base + pat.replace('{sx}', it[0]).replace('{sz}', it[1]),
+          state: 0, dist: 0, error: ''
+        });
+      }
+      el('loading').classList.add('show');
+      el('loading').textContent = '加载分区 0/' + shards.length;
+    }
     window.__SPAWN__ = w.spawn || (index.world && index.world.spawn) || null;
+    window.__INDEX__ = index;
+    window.__SHARDS__ = shards;
   }
 
   function selectWorld(w, updateUrl) {
@@ -416,7 +530,7 @@
       c.vao = g.vao; c.vbo = g.vbo; c.ibo = g.ibo; c.count = g.count; c.loaded = true;
       loaded++;
       el('loading').textContent = '加载网格 ' + loaded + '/' + chunks.length;
-      if (loaded === chunks.length) { el('loading').classList.remove('show'); el('loading').textContent = '加载中…'; }
+      if (loaded >= chunks.length && !shardLoading) { el('loading').classList.remove('show'); el('loading').textContent = '加载中…'; }
     }).catch(function (e) {
       if (gen !== worldGen) return;
       el('sub').textContent = '网格加载失败: ' + (e && e.message ? e.message : e);
@@ -509,7 +623,8 @@
     }
     gl.bindVertexArray(null);
 
-    // 按需加载：每帧补 1 个，按距离优先
+    // 按需加载：先按可见性补分区清单，再补网格，均按距离优先
+    updateShards();
     pump();
 
     // HUD

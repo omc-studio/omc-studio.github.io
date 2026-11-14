@@ -19,7 +19,6 @@ window.MCW_CONFIG = {
   accountUrl: "",
   /* 内部来源白名单：只按 URL.hostname 精确匹配，禁止字符串前缀判断 */
   internalHosts: [
-    "amazing-minecraft.pages.dev",
     "amc-world.pages.dev",
     "omc-world.github.io",
     "omc-studio.github.io",
@@ -457,6 +456,24 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
 <script src="./assets/js/nav.js?v=20261114g" defer></script>
 <script src="./assets/js/account.js?v=20261114g" defer></script>
 <script src="./assets/js/prewarm.js?v=20261114g" defer></script>
+<script>
+/* 页面 load 后惰性预热 Turnstile；失败静默，不阻塞首屏。 */
+(function () {
+  function warm() {
+    try {
+      if (window.MCW && window.MCW.prewarm && typeof window.MCW.prewarm.start === 'function') window.MCW.prewarm.start();
+    } catch (e) {}
+  }
+  function schedule() {
+    try {
+      if ('requestIdleCallback' in window) requestIdleCallback(warm, { timeout: 3000 });
+      else setTimeout(warm, 2500);
+    } catch (e) {}
+  }
+  if (document.readyState === 'complete') schedule();
+  else window.addEventListener('load', schedule, { once: true });
+})();
+</script>
 <script src="./assets/js/play.js?v=20261114g" defer></script>
 </body>
 </html>

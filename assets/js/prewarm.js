@@ -6,7 +6,7 @@
   var CDN = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
   var CACHE_KEY = 'omc_ts_token';
   var TTL = 5 * 60 * 1000;
-  var started = false, done = false, timer = null, tries = 0;
+  var started = false, done = false, timer = null, tries = 0, watching = false, queued = false;
 
   function freshToken() {
     try {
@@ -33,6 +33,18 @@
   function giveUp() {
     done = true;
     if (timer) { clearTimeout(timer); timer = null; }
+  }
+
+  function idleLoad() {
+    if (started || done || queued) return;
+    queued = true;
+    if ('requestIdleCallback' in window) {
+      try {
+        requestIdleCallback(function () { queued = false; load(); }, { timeout: 3000 });
+        return;
+      } catch (e) { queued = false; }
+    }
+    setTimeout(function () { queued = false; load(); }, 2500);
   }
 
   function render() {
@@ -68,14 +80,15 @@
     s.defer = true;
     s.onload = function () { render(); };
     s.onerror = function () { giveUp(); };
-    (document.head || document.documentElement).appendChild(s);
+    try { (document.head || document.documentElement).appendChild(s); } catch (e) { giveUp(); }
   }
 
   function start() {
-    if (started || done) return;
+    if (started || done || watching) return;
     if (!String(CFG.turnstileSiteKey || '').trim()) return;
     var panel = document.getElementById('account-panel');
     if (!panel) return;
+    watching = true;
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
         for (var i = 0; i < entries.length; i++) {
@@ -83,11 +96,9 @@
         }
       }, { rootMargin: '200px 0px', threshold: 0.01 });
       io.observe(panel);
-    } else if ('requestIdleCallback' in window) {
-      requestIdleCallback(load, { timeout: 3000 });
-    } else {
-      setTimeout(load, 2000);
     }
+    if (document.readyState === 'complete') idleLoad();
+    else window.addEventListener('load', idleLoad, { once: true });
   }
 
   MCW.prewarm = { start: start, load: load };

@@ -116,11 +116,13 @@
     var padL = 54, padR = 16, padT = 16, padB = 26;
     var iw = w - padL - padR;
     var innerH = h - padT - padB;
+    var wantVol = !!(opts && opts.volume && allowVolume);
     var maxV = 0;
-    if (opts && opts.volume && allowVolume) {
+    if (wantVol) {
       series.forEach(function (s) { if (s.v > maxV) maxV = s.v; });
     }
-    var hasVol = maxV > 0;
+    /* 请求成交量区时即使 v 全为 0 也预留基线区，用文案说明暂无成交，绝不画假柱 */
+    var hasVol = wantVol;
     var gap = hasVol ? 10 : 0;
     var volH = hasVol ? Math.min(64, Math.max(24, Math.round(innerH * 0.28))) : 0;
     if (hasVol && volH + gap > innerH - 20) volH = Math.max(16, innerH - gap - 20);
@@ -182,6 +184,7 @@
     if (L.hasVol) {
       var bw = Math.max(1, Math.min(18, (iw / Math.max(1, series.length - 1)) * 0.5));
       out.push('<line class="vol-base" x1="' + padL + '" y1="' + (L.volTop + L.volH) + '" x2="' + (w - padR) + '" y2="' + (L.volTop + L.volH) + '" stroke="' + COLOR.axis + '" stroke-width="1"/>');
+      out.push('<text class="vol-label" x="' + (padL - 8) + '" y="' + (L.volTop + 9) + '" text-anchor="end" fill="' + COLOR.text + '" font-size="9">成交量</text>');
       out.push('<g class="vol-bars">');
       for (i = 0; i < series.length; i++) {
         var vh = volumeHeight(series[i].v, L.maxV, L.volH);
@@ -192,6 +195,9 @@
         out.push('<rect class="vol-bar" x="' + bx.toFixed(1) + '" y="' + by.toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + vh + '" fill="' + (up ? COLOR.up : COLOR.down) + '" fill-opacity="0.5" data-v="' + esc(series[i].v) + '"><title>成交量 ' + esc(String(Math.round(series[i].v))) + '</title></rect>');
       }
       out.push('</g>');
+      if (L.maxV <= 0) {
+        out.push('<text class="vol-empty" x="' + (padL + iw / 2).toFixed(1) + '" y="' + (L.volTop + L.volH / 2 + 3).toFixed(1) + '" text-anchor="middle" fill="' + COLOR.text + '" font-size="10">暂无成交</text>');
+      }
     }
 
     out.push('<g class="chart-hover" opacity="0" pointer-events="none">');
