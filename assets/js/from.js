@@ -95,8 +95,11 @@
   function verifyLinks() {
     if (!document.querySelectorAll) return;
     var next = String(loc().pathname || '') + String(loc().search || '') + String(loc().hash || '');
+    var want = addToUrl('./verify.html?next=' + encodeURIComponent(next));
     Array.prototype.slice.call(document.querySelectorAll('[data-verify-link]')).forEach(function (a) {
-      a.setAttribute('href', addToUrl('./verify.html?next=' + encodeURIComponent(next)));
+      /* 值相同就不写：setAttribute 即使值不变也会产生 attribute mutation，
+         在 MutationObserver 回调里无条件写 href 会自激成死循环（曾导致首页/规则/股票页卡死） */
+      if (a.getAttribute('href') !== want) a.setAttribute('href', want);
     });
   }
 
@@ -129,8 +132,15 @@
     document.addEventListener('submit', function (ev) { decorateForm(ev.target); }, true);
     if (window.MutationObserver && document.documentElement) {
       try {
-        new window.MutationObserver(function () { verifyLinks(); all(); })
-          .observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['href'] });
+        var busy = false;
+        new window.MutationObserver(function () {
+          /* 重入守卫：回调里写 DOM 会再次触发回调，必须挡住自激 */
+          if (busy) return;
+          busy = true;
+          try { verifyLinks(); all(); } finally { busy = false; }
+        })
+        /* 只观察新增节点；不再观察 href 属性——我们自己就是唯一改 href 的人 */
+          .observe(document.documentElement, { childList: true, subtree: true });
       } catch (e) {}
     }
     ready = true;
