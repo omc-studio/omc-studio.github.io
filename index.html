@@ -212,6 +212,15 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
 .small{font-size:12px}
 .sep{color:var(--line)}
 .addr{font-family:var(--mono);color:var(--accent)}
+.addr-hero{margin-bottom:18px;border-color:rgba(242,193,78,.35);background:linear-gradient(180deg,rgba(242,193,78,.06),transparent 60%),var(--panel)}
+.addr-hero-in{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
+.addr-main{display:flex;align-items:baseline;flex-wrap:wrap;gap:10px}
+.addr-hero .addr{font-size:22px;font-weight:600;line-height:1.2;letter-spacing:.02em}
+.addr-state{font-size:12px;color:var(--muted)}
+.addr-state.on{color:var(--up)}
+.addr-state.off{color:var(--down)}
+.addr-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-left:auto}
+.addr-note{flex-basis:100%;margin:0}
 
 /* 详情头 */
 .detail-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px 16px;margin-bottom:12px}
@@ -265,6 +274,8 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
 @media (max-width:640px){
   .form-row .field{flex:1 1 100%}
   .bigcode{font-size:24px}
+  .addr-hero .addr{font-size:18px}
+  .addr-actions{margin-left:0}
 }
 /* Turnstile 人机验证 */
 .ts-panel{margin-top:18px}
@@ -294,6 +305,22 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
     <h1>服务器状态</h1>
     <p class="sub">实时读取服务端数据，每 5 秒刷新；断线时保留最后一次成功数据。</p>
   </div>
+
+  <section class="panel addr-hero" id="server-address" aria-labelledby="server-address-title">
+    <div class="panel-body addr-hero-in">
+      <div class="addr-main">
+        <span class="muted small" id="server-address-title">服务器地址</span>
+        <span class="addr" id="addr">—</span>
+        <span class="addr-state" id="addr-state">未获取</span>
+      </div>
+      <div class="addr-actions">
+        <button class="btn btn-sm btn-primary" type="button" id="get-addr">复制地址</button>
+        <button class="btn btn-sm hidden" type="button" id="addr-follow">开启自动更新</button>
+        <span class="small muted" id="addr-follow-note"></span>
+      </div>
+      <p class="small muted addr-note">地址由 <code>/api/status</code> 实时提供，随状态每 5 秒刷新；取不到时显示 <code>—</code>，不会沿用旧地址；点击获取后每 20 秒自动更新。</p>
+    </div>
+  </section>
 
   <section class="statusbar" aria-live="polite">
     <div class="stat-inline"><span class="k">在线</span><span class="v" id="stat-online">—</span><span class="k" id="stat-max"></span></div>
@@ -335,18 +362,6 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
     <a class="card" href="./play.html" data-account-link><div class="t">账号绑定</div><div class="d" data-account-note>暂未开放</div></a>
   </div>
 
-  <section class="panel" style="margin-top:18px">
-    <div class="panel-body" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px">
-      <span class="muted small">连接地址</span>
-      <span class="addr" id="addr">未获取</span>
-      <button class="btn btn-sm" type="button" id="get-addr">获取连接地址</button>
-      <button class="btn btn-sm hidden" type="button" id="addr-follow">停止自动更新</button>
-      <span class="small muted" id="addr-follow-note"></span>
-      <span class="sep">|</span>
-      <span class="muted small">版本</span><b class="mono" id="addr-version">—</b>
-      <p class="small muted" style="flex-basis:100%;margin:0">首次点击获取并复制；之后每 20 秒自动更新，可随时停止</p>
-    </div>
-  </section>
   <section class="panel ts-panel">
     <div class="panel-head"><h2>人机验证</h2><span class="meta" id="ts-state">未验证</span></div>
     <div class="panel-body">

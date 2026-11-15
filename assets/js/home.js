@@ -54,6 +54,9 @@
 
   function paint(p) {
     var d = p.data || {};
+    if (MCW.address && typeof MCW.address.set === 'function') {
+      MCW.address.set(d.serverAddress, p.state === 'down' || p.state === 'connecting' || !!p.expired);
+    }
     if (p.expired) {
       samples = [];
       save();

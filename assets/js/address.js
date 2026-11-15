@@ -49,12 +49,17 @@
 
   function paintAddress() {
     var addr = el('addr');
+    var state = el('addr-state');
     var btn = addressButton();
     var fbtn = followButton();
     var note = el('addr-follow-note');
-    if (addr) addr.textContent = currentAddress || (failed ? '未获取（可重试）' : (revealed ? '待开通' : '未获取'));
+    if (addr) addr.textContent = currentAddress || '—';
+    if (state) {
+      state.textContent = currentAddress ? '已获取' : (failed ? '服务端离线' : '未获取');
+      state.className = 'addr-state' + (currentAddress ? ' on' : (failed ? ' off' : ''));
+    }
     if (btn) {
-      btn.textContent = currentAddress ? '复制连接地址' : '获取连接地址';
+      btn.textContent = currentAddress ? '复制地址' : '获取地址';
       btn.disabled = false;
       if (typeof btn.removeAttribute === 'function') btn.removeAttribute('data-copy');
     }
@@ -132,8 +137,9 @@
     return true;
   }
 
-  function set(raw) {
+  function set(raw, isFailed) {
     currentAddress = normalize(raw);
+    if (typeof isFailed === 'boolean') failed = isFailed;
     paintAddress();
     return currentAddress;
   }
@@ -149,7 +155,7 @@
     field = field || 'serverAddress';
     if (!MCW.api || typeof MCW.api.get !== 'function' ||
         (typeof MCW.api.connected === 'function' && !MCW.api.connected())) {
-      set('');
+      set('', true);
       setVersion('');
       return Promise.resolve('');
     }
@@ -205,10 +211,9 @@
       markOk();
       applyStatus(data);
       var next = normalize(data.serverAddress);
-      if (next !== currentAddress) {
-        set(next);
-        if (MCW.toast) MCW.toast(next ? '地址已更新' : '地址待开通', next ? 'ok' : 'err');
-      }
+      var prev = currentAddress;
+      set(next);
+      if (next !== prev && MCW.toast) MCW.toast(next ? '地址已更新' : '地址待开通', next ? 'ok' : 'err');
       setVersion(data.version);
       return currentAddress;
     }, function () {
