@@ -276,6 +276,28 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
 .ts-note{margin:0}
 #ts-box{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--line-soft)}
 
+/* 进服指南 */
+.guide-version{margin-bottom:14px}
+.guide-version b{color:var(--text);font-weight:600}
+.guide-steps{list-style:none;padding:0;margin:0;counter-reset:guide}
+.guide-steps>li{position:relative;padding:0 0 14px 40px;margin:0 0 14px;border-bottom:1px solid var(--line-soft)}
+.guide-steps>li:last-child{border-bottom:0;margin-bottom:0;padding-bottom:0}
+.guide-steps>li:before{counter-increment:guide;content:counter(guide);position:absolute;left:0;top:0;width:26px;height:26px;
+  border:1px solid var(--accent);border-radius:50%;color:var(--accent);font:600 13px/24px var(--mono);text-align:center}
+.guide-t{font-weight:600;color:var(--text);margin-bottom:4px}
+.guide-steps p{margin:0 0 8px}
+.guide-steps .code-row{margin:6px 0}
+.guide-steps .cmd{display:inline-block;font-size:13px;padding:6px 9px;border:1px solid var(--line);
+  border-radius:var(--r);background:var(--bg);color:var(--accent);word-break:break-all}
+.guide-sub{font-size:13px;color:var(--muted);margin:18px 0 8px;letter-spacing:.04em}
+.guide-errors th,.guide-errors td{white-space:normal}
+.guide-errors td:first-child{width:34%;font-family:var(--mono);font-size:12px;color:var(--text)}
+.guide-errors code{font-family:var(--mono);color:var(--accent)}
+@media (max-width:640px){
+  .guide-errors td:first-child{width:auto}
+  .guide-steps>li{padding-left:34px}
+}
+
 </style>
 </head>
 <body>
@@ -314,6 +336,55 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
       <span class="muted small">版本</span><b class="mono" id="ver">—</b>
       <p class="small muted" style="flex-basis:100%;margin:0">页面加载即自动获取；按钮用于刷新/复制，之后每 20 秒自动更新，可随时停止</p>
       <p class="small muted" style="flex-basis:100%;margin:0">网页短链 <code>/mc</code> 由 Cloudflare 302 跳转到地图站；Minecraft 客户端仍需直连上面的 TCP 地址，302 不能替代。</p>
+    </div>
+  </section>
+
+  <section class="panel" id="join-guide">
+    <div class="panel-head"><h2>进服指南</h2><span class="meta">第一次来，按这四步</span></div>
+    <div class="panel-body">
+      <div class="notice guide-version">
+        <div><b>版本要求：</b>Java 版 Minecraft，客户端 <b>1.21.11 ~ 26.3</b> 均可。
+          Fabric / Forge / NeoForge 客户端都能进；服务端通过代理做协议翻译，<b>不需要额外装模组</b>。
+          基岩版（手机 / 主机）不能直接进入。</div>
+      </div>
+      <ol class="guide-steps">
+        <li>
+          <div class="guide-t">1. 加服务器</div>
+          <p>启动 Java 版客户端，进入 <b>多人游戏 → 添加服务器</b>。地址填上方「服务器」区块自动获取的地址，名称随意，保存后双击进入。</p>
+          <p class="small muted">不要填网页短链 <code>/mc</code>：那是浏览器跳转，不是 Minecraft 客户端用的 TCP 地址。</p>
+        </li>
+        <li>
+          <div class="guide-t">2. 创建游戏通行证</div>
+          <p>第一次进入后，按聊天栏提示在聊天框输入：</p>
+          <div class="code-row"><code class="mono cmd">/pass register &lt;密钥&gt; &lt;密钥&gt;</code></div>
+          <p class="small muted">两个密钥必须一致，长度 6~64 位。通行证是游戏内身份，和网页账户分开，请自己记牢。</p>
+        </li>
+        <li>
+          <div class="guide-t">3. 登录网页账户</div>
+          <p>在同一个聊天框输入：</p>
+          <div class="code-row"><code class="mono cmd">/login &lt;邮箱&gt; &lt;密码&gt;</code></div>
+          <p class="small muted">游戏内不能直接输入 <code>@</code> 时，用 <code>.</code> 代替，例如 <code>name.example.com</code>；网页账户的注册与登录也在本页下方。</p>
+        </li>
+        <li>
+          <div class="guide-t">4. 绑定网页账号</div>
+          <p>需要网页下单或管理时，先在下方「绑定 Minecraft」生成 8 位绑定码，再回到游戏输入：</p>
+          <div class="code-row"><code class="mono cmd">/account link &lt;码&gt;</code></div>
+          <p class="small muted">绑定码 10 分钟内有效；过期后回网页重新生成。</p>
+        </li>
+      </ol>
+      <h3 class="guide-sub">常见错误</h3>
+      <div class="tbl-wrap">
+        <table class="tbl guide-errors">
+          <thead><tr><th>提示 / 现象</th><th>可能原因与处理</th></tr></thead>
+          <tbody>
+            <tr><td><code>Connection refused</code><br><code>Unknown host</code></td><td>公网入口正在维护或地址已变化。先看首页状态卡，确认服务器在线后重新获取地址；仍失败请稍后再试。</td></tr>
+            <tr><td><code>Incompatible client</code></td><td>客户端版本低于 1.21.11 或高于 26.3。换到支持范围内的 Java 版客户端再进。</td></tr>
+            <tr><td>卡在人机验证</td><td>换一个浏览器，或关闭广告 / 脚本拦截插件后重试；验证通过前不要重复提交。</td></tr>
+            <tr><td>资源包下载失败</td><td>可先点「否」继续进入；进服后按聊天栏提示重试（服务器若提供 <code>/resourcepack</code> 可用），或暂时忽略（只影响自定义贴图，不影响游玩）。</td></tr>
+            <tr><td>忘记密码</td><td>游戏通行证用 <code>/pass login &lt;密钥&gt;</code> 在本机重新绑定；网页账户密码按下方账号面板的登录提示处理。</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </section>
 
@@ -375,6 +446,7 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
         <p class="small muted" id="acc-remember" style="margin:8px 0 0"></p>
         <div id="pass-box" style="margin-top:14px">
           <p class="small muted" style="margin:0 0 8px">游戏通行证是进入服务器后的游戏内身份；网页账户只用于管理站点与绑定，两者不是同一个东西。</p>
+          <p class="small muted" id="pass-help" style="margin:0 0 8px">换设备时在游戏内执行 <code class="mono">/pass login &lt;密钥&gt;</code> 重新绑定已有通行证；网页账户密码忘记时，请在登录区按提示处理。</p>
           <div id="pass-empty">
             <p class="small" style="margin:0 0 8px"><b>尚未创建</b>。进入服务器后执行下面的命令创建通行证（密钥 6~64 位）：</p>
             <div class="code-row">
@@ -472,16 +544,6 @@ label.f{display:block;margin-bottom:6px;color:var(--muted);font-size:12px}
     </div>
   </section>
 
-  <section class="panel">
-    <div class="panel-head"><h2>进服步骤</h2></div>
-    <div class="panel-body">
-      <ol class="small" style="line-height:2">
-        <li>添加服务器，地址填上面的内容，进入。</li>
-        <li>首次进入按聊天栏提示注册，已有账号直接登录。</li>
-        <li>需要网页下单时，在上方生成绑定码，游戏内输入 <code class="mono">/account link &lt;码&gt;</code>。</li>
-      </ol>
-    </div>
-  </section>
 </main>
 
 <footer class="foot"><div class="wrap"><span>AMC Minecraft Community</span><span class="sep">·</span><span>© <span data-year>2026</span></span></div></footer>
