@@ -165,6 +165,7 @@
   MCW.price = function (n) {
     var v = Number(n);
     if (!isFinite(v)) return '—';
+    if (v === 0) return '0'; /* 0 不显示成 0.0000：坐标轴零刻度与空价格统一成 0 */
     if (v >= 1000) return MCW.num(v, 0);
     if (v >= 1) return MCW.num(v, 2);
     return MCW.num(v, 4);
